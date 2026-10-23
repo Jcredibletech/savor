@@ -74,7 +74,7 @@ function apply(s){
   const scope=c?`within ${rad} mi of ${s.zip}`:"statewide";
   const rated=list.filter(r=>ratingOf(r)!=="none").length;
   $("resTitle").textContent=`${list.length.toLocaleString()} ${cu} ${scope}`;
-  $("resSub").textContent=`${rated} rated · ${list.length-rated} not yet rated${s.rating!=="all"?` · rating filter: ${$("fRating").selectedOptions[0].text}`:""}`;
+  $("resSub").textContent=`${rated.toLocaleString()} rated · ${(list.length-rated).toLocaleString()} not yet rated${s.rating!=="all"?` · rating filter: ${$("fRating").selectedOptions[0].text}`:""}`;
   const b=$("banner");
   if(list.length===0){b.innerHTML=`No ${esc(cu)} found ${esc(scope)} in the OSM dataset${s.rating!=="all"?" with this rating filter":""}. Try a larger radius.`;b.hidden=false;}
   else if(rated===0){b.innerHTML=`<b>No rating run yet for ${esc(s.cuisine==="All"?"these restaurants":s.cuisine)} ${c?"near "+esc(s.zip):"statewide"}</b>. Ask Savor to run one. Every place below comes from OpenStreetMap and is marked <i>Not yet rated</i>.`;b.hidden=false;}
