@@ -1,20 +1,20 @@
 {
  "total": 3391,
- "rated": 623,
+ "rated": 773,
  "progress": {
-  "rated": 623,
-  "done": 623,
+  "rated": 773,
+  "done": 773,
   "total": 3391,
-  "remaining": 2768,
+  "remaining": 2618,
   "updated": "2026-10-23T12:00-05:00",
   "by_rating": {
-   "unknown": 234,
-   "green": 96,
-   "yellow": 226,
-   "closed": 21,
-   "red": 46
+   "unknown": 293,
+   "green": 133,
+   "yellow": 269,
+   "closed": 26,
+   "red": 52
   },
-  "note": "NW Arkansas in progress: batch 4 of 6"
+  "note": "NW Arkansas in progress: batch 5 of 6"
  },
  "runs": [
   {
@@ -38,6 +38,12 @@
   {
    "file": "all_nwa_batch03_2026-10-23.json",
    "run": "All cuisines, NW Arkansas, batch 3 (Restaurantji + NWArkansas.com + web check)",
+   "date": "2026-10-23",
+   "rated": 150
+  },
+  {
+   "file": "all_nwa_batch05_2026-10-23.json",
+   "run": "All cuisines, NW Arkansas, batch 5 (Restaurantji + NWArkansas.com + web check)",
    "date": "2026-10-23",
    "rated": 150
   },
