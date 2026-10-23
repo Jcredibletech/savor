@@ -1,20 +1,20 @@
 {
  "total": 3391,
- "rated": 1440,
+ "rated": 1590,
  "progress": {
-  "rated": 1440,
-  "done": 1440,
+  "rated": 1590,
+  "done": 1590,
   "total": 3391,
-  "remaining": 1951,
+  "remaining": 1801,
   "updated": "2026-10-23T12:48-05:00",
   "by_rating": {
-   "unknown": 588,
-   "yellow": 476,
-   "red": 153,
-   "green": 177,
-   "closed": 46
+   "unknown": 673,
+   "yellow": 505,
+   "red": 180,
+   "green": 182,
+   "closed": 50
   },
-  "note": "NW Arkansas and Fort Smith done; Little Rock metro through batch 11"
+  "note": "NW Arkansas and Fort Smith done; Little Rock metro through batch 12"
  },
  "runs": [
   {
@@ -86,6 +86,12 @@
   {
    "file": "all_lrm_batch11_2026-10-23.json",
    "run": "All cuisines, Little Rock metro, batch 11 (Restaurantji + NWArkansas.com/Foodeist + web check)",
+   "date": "2026-10-23",
+   "rated": 150
+  },
+  {
+   "file": "all_lrm_batch12_2026-10-23.json",
+   "run": "All cuisines, Little Rock metro, batch 12 (Restaurantji + NWArkansas.com/Foodeist + web check)",
    "date": "2026-10-23",
    "rated": 150
   }
