@@ -1,20 +1,20 @@
 {
  "total": 3391,
- "rated": 1140,
+ "rated": 1290,
  "progress": {
-  "rated": 1140,
-  "done": 1140,
+  "rated": 1290,
+  "done": 1290,
   "total": 3391,
-  "remaining": 2251,
-  "updated": "2026-10-23T12:18-05:00",
+  "remaining": 2101,
+  "updated": "2026-10-23T12:48-05:00",
   "by_rating": {
-   "unknown": 431,
-   "yellow": 396,
-   "red": 110,
-   "green": 165,
-   "closed": 38
+   "unknown": 509,
+   "yellow": 438,
+   "red": 129,
+   "green": 173,
+   "closed": 41
   },
-  "note": ""
+  "note": "NW Arkansas and Fort Smith done; Little Rock metro through batch 10"
  },
  "runs": [
   {
@@ -76,6 +76,12 @@
    "run": "All cuisines, NW Arkansas + Fort Smith supplement, batch 9 (Foodeist second source added; ambiguous Foodeist matches removed)",
    "date": "2026-10-23",
    "rated": 84
+  },
+  {
+   "file": "all_lrm_batch10_2026-10-23.json",
+   "run": "All cuisines, Little Rock metro, batch 10 (Restaurantji + NWArkansas.com/Foodeist + web check)",
+   "date": "2026-10-23",
+   "rated": 150
   }
  ],
  "osm_gaps": [
@@ -102,7 +108,7 @@
  ],
  "osm_timestamp": "2026-10-23T15:54:06Z",
  "dataset_built": "2026-10-23",
- "built": "2026-10-23T12:18-05:00",
+ "built": "2026-10-23T12:48-05:00",
  "stats": {
   "total": 3391,
   "by_cuisine": [
