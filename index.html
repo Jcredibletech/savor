@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savor · Arkansas Restaurant Map</title>
+<meta name="description" content="Every OpenStreetMap-listed restaurant in Arkansas, with evidence-backed green / yellow / red ratings and links to every source.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%23e4572e%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand"><span class="logo-dot"></span>Savor</div>
+    <h1>Find the good plates in <span class="hl">Arkansas</span>.</h1>
+    <p class="lede">Every restaurant OpenStreetMap knows about in the state, rated <b class="g">green</b>, <b class="y">yellow</b> or <b class="r">red</b> from real reviews, press and posts, with links to every source. Anything we couldn't verify is labeled <i>unknown</i>.</p>
+    <div class="hero-stats">
+      <div class="stat"><span id="statTotal">–</span><small>restaurants mapped</small></div>
+      <div class="stat"><span id="statRated">–</span><small>rated so far</small></div>
+      <div class="stat"><span>22</span><small>cuisine groups</small></div>
+    </div>
+    <div class="progress" aria-label="rating progress"><div class="bar" id="progBar"></div></div>
+    <div class="progress-label" id="progLabel"></div>
+  </div>
+</header>
+
+<div class="controls-wrap">
+  <div class="controls glass" role="search">
+    <label class="field"><span>Cuisine</span><select id="fCuisine"></select></label>
+    <label class="field"><span>ZIP code</span><input id="fZip" inputmode="numeric" maxlength="5" placeholder="e.g. 72734 (blank = statewide)"></label>
+    <label class="field"><span>Radius</span><select id="fRadius">
+      <option value="5">5 mi</option><option value="10">10 mi</option><option value="15">15 mi</option><option value="20">20 mi</option>
+      <option value="30" selected>30 mi</option><option value="50">50 mi</option><option value="75">75 mi</option><option value="100">100 mi</option></select></label>
+    <label class="field"><span>Rating</span><select id="fRating">
+      <option value="all">Any</option><option value="rated">Rated only</option><option value="green">Green</option><option value="yellow">Yellow</option>
+      <option value="red">Red</option><option value="unknown">Unknown</option><option value="closed">Closed</option><option value="none">Not yet rated</option></select></label>
+    <div class="btns">
+      <button id="btnSubmit" class="btn primary">Submit</button>
+      <button id="btnReset" class="btn ghost">Reset</button>
+    </div>
+    <div id="pending" class="pending" hidden>Changes not applied yet. Click <b>Submit</b>.</div>
+    <div id="zipErr" class="err" hidden></div>
+  </div>
+</div>
+
+<main>
+  <section class="map-section">
+    <div id="map" aria-label="Map of restaurants"></div>
+    <div class="legend glass">
+      <span><i class="dot green"></i>Green</span><span><i class="dot yellow"></i>Yellow</span><span><i class="dot red"></i>Red</span>
+      <span><i class="dot unknown"></i>Unknown</span><span><i class="dot closed"></i>Closed</span><span><i class="dot none"></i>Not yet rated</span>
+    </div>
+  </section>
+
+  <section class="results">
+    <div class="results-head">
+      <div>
+        <h2 id="resTitle">Results</h2>
+        <p id="resSub" class="muted"></p>
+      </div>
+      <label class="sort">Sort
+        <select id="sort"><option value="dist">Nearest first</option><option value="rating">Best rated first</option><option value="name">Name A–Z</option></select>
+      </label>
+    </div>
+    <div id="banner" class="banner" hidden></div>
+    <div id="cards" class="cards"></div>
+    <div class="more-wrap"><button id="btnMore" class="btn ghost" hidden>Show more</button></div>
+  </section>
+
+  <section class="info-grid">
+    <article class="panel">
+      <h3>How ratings work</h3>
+      <ul class="rubric">
+        <li><span class="pill green">Green</span>Two or more independent sources agree: about 4.3+ on a meaningful sample, or positive press plus 4.2+, and no recurring serious complaint.</li>
+        <li><span class="pill yellow">Yellow</span>Mixed or middling (about 3.5–4.2), big disagreement between platforms, recurring service or consistency complaints, or thin/dated evidence.</li>
+        <li><span class="pill red">Red</span>Mostly negative recent evidence (about 3.4 or below), repeated sickness reports, or a cited failed inspection.</li>
+        <li><span class="pill unknown">Unknown</span>Fewer than two relevant sources. Never guessed.</li>
+        <li><span class="pill closed">Closed</span>A citable source says it closed. Not rated, kept on the map.</li>
+        <li><span class="pill none">Not yet rated</span>In the OSM dataset, but no research run has covered it yet.</li>
+      </ul>
+    </article>
+    <article class="panel">
+      <h3>Cuisine mix (OSM)</h3>
+      <div id="cuisineBars" class="bars"></div>
+    </article>
+    <article class="panel">
+      <h3>Known gaps in OpenStreetMap</h3>
+      <p class="muted">Places found in web listings that are missing from OSM, so they are not on the map.</p>
+      <ul id="gaps" class="gaps"></ul>
+      <p class="muted small">La Huerta Mexican Restaurant (Gentry) is still in OSM but is labeled <span class="pill closed">Closed</span>: HappyCow reports it closed in Nov 2025.</p>
+    </article>
+    <article class="panel">
+      <h3>Sources &amp; honesty notes</h3>
+      <ul class="notes">
+        <li>Restaurant list: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL), via the Overpass API. Snapshot: <span id="osmTs"></span>.</li>
+        <li>ZIP backfill and ZIP centers: <a href="https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html" target="_blank" rel="noopener">US Census 2020 ZCTA Gazetteer</a>. About a third of ZIPs are inferred from the nearest ZIP center, so some may be wrong.</li>
+        <li>Cuisine comes from OSM tags. Where those are missing it is inferred from the name, or listed as Other/Unknown.</li>
+        <li>Star figures in reasons are as aggregators (Restaurantji, Birdeye, Yahoo Local and others) reported them, usually second-hand from Google or Yelp, so treat them as approximate.</li>
+        <li>Reddit, Yelp and Tripadvisor pages were blocked from our research machine, and X search reaches only about 30 days back, so they were used only through search results. Free sources only: no paid or keyed review APIs.</li>
+        <li>Basemap: OpenStreetMap HOT style by the <a href="https://www.hotosm.org/" target="_blank" rel="noopener">Humanitarian OSM Team</a>, hosted free by <a href="https://openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a>, © OpenStreetMap contributors.</li>
+      </ul>
+      <p class="muted small" id="buildInfo"></p>
+    </article>
+  </section>
+</main>
+<footer>Savor · built from open data · no reviews are posted and no restaurants are contacted</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

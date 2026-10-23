@@ -1,0 +1,145 @@
+{
+ "total": 3391,
+ "rated": 23,
+ "progress": {},
+ "runs": [
+  {
+   "file": "mexican_72734_30mi_2026-10-23.json",
+   "run": "Mexican within 30 mi of 72734",
+   "date": "2026-10-23",
+   "rated": 23
+  }
+ ],
+ "osm_gaps": [
+  {
+   "name": "Restaurante Mobile Familiar",
+   "town": "Decatur",
+   "source": "https://www.restaurantji.com/ar/decatur/restaurante-mobile-familiar-decatur-/"
+  },
+  {
+   "name": "Don Taco",
+   "town": "Gentry",
+   "source": "https://exa.ai/library/places?q=aef2a20e24bff138"
+  },
+  {
+   "name": "Burrito House & Taquer\u00eda",
+   "town": "Gentry",
+   "source": "https://exa.ai/library/places?q=aef2a20e24bff138"
+  },
+  {
+   "name": "Taquer\u00eda Michoac\u00e1n",
+   "town": "Siloam Springs",
+   "source": "https://exa.ai/library/places?q=dad7b6acba0a37ab"
+  }
+ ],
+ "osm_timestamp": "2026-10-23T15:54:06Z",
+ "dataset_built": "2026-10-23",
+ "built": "2026-10-23T11:27-05:00",
+ "stats": {
+  "total": 3391,
+  "by_cuisine": [
+   [
+    "Burgers",
+    653
+   ],
+   [
+    "Mexican",
+    417
+   ],
+   [
+    "Coffee/Cafe",
+    329
+   ],
+   [
+    "Sandwich/Deli",
+    314
+   ],
+   [
+    "Pizza",
+    312
+   ],
+   [
+    "Other/Unknown",
+    303
+   ],
+   [
+    "American",
+    228
+   ],
+   [
+    "Chicken",
+    219
+   ],
+   [
+    "Bakery/Dessert",
+    140
+   ],
+   [
+    "BBQ",
+    80
+   ],
+   [
+    "Chinese",
+    74
+   ],
+   [
+    "Japanese/Sushi",
+    56
+   ],
+   [
+    "Seafood",
+    52
+   ],
+   [
+    "Steakhouse",
+    50
+   ],
+   [
+    "Italian",
+    46
+   ],
+   [
+    "Breakfast/Brunch",
+    40
+   ],
+   [
+    "Southern/Soul",
+    19
+   ],
+   [
+    "Thai",
+    18
+   ],
+   [
+    "Mediterranean/Greek",
+    16
+   ],
+   [
+    "Vietnamese",
+    13
+   ],
+   [
+    "Indian",
+    10
+   ],
+   [
+    "Cajun",
+    2
+   ]
+  ],
+  "cuisine_source": {
+   "osm_tag": 2865,
+   "name_inferred": 189,
+   "osm_amenity": 74,
+   "none": 263
+  },
+  "zip_source": {
+   "zcta_nearest_centroid": 1231,
+   "osm": 2160
+  },
+  "unnamed": 107,
+  "with_website": 1669,
+  "with_phone": 1669,
+  "osm_ts": "2026-10-23T15:54:06Z"
+ }
+}
