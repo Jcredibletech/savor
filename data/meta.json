@@ -1,20 +1,20 @@
 {
  "total": 3391,
- "rated": 1012,
+ "rated": 1140,
  "progress": {
-  "rated": 1012,
-  "done": 1012,
+  "rated": 1140,
+  "done": 1140,
   "total": 3391,
-  "remaining": 2379,
+  "remaining": 2251,
   "updated": "2026-10-23T12:11-05:00",
   "by_rating": {
-   "unknown": 406,
-   "yellow": 344,
-   "red": 68,
-   "green": 159,
-   "closed": 35
+   "unknown": 480,
+   "yellow": 372,
+   "red": 88,
+   "green": 162,
+   "closed": 38
   },
-  "note": "NW Arkansas done; Fort Smith area batch 1 of 2"
+  "note": "NW Arkansas and Fort Smith area done"
  },
  "runs": [
   {
@@ -58,6 +58,12 @@
    "run": "All cuisines, NW Arkansas, batch 4 (Restaurantji + NWArkansas.com + web check)",
    "date": "2026-10-23",
    "rated": 150
+  },
+  {
+   "file": "all_fsm_batch08_2026-10-23.json",
+   "run": "All cuisines, Fort Smith area, batch 8 (Restaurantji + NWArkansas.com/Foodeist + web check)",
+   "date": "2026-10-23",
+   "rated": 128
   },
   {
    "file": "all_fsm_batch07_2026-10-23.json",
