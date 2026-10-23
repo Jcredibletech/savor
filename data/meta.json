@@ -8,11 +8,11 @@
   "remaining": 1371,
   "updated": "2026-10-23T13:18-05:00",
   "by_rating": {
-   "red": 262,
-   "yellow": 599,
-   "unknown": 898,
+   "closed": 64,
+   "yellow": 749,
    "green": 197,
-   "closed": 64
+   "unknown": 898,
+   "red": 112
   },
   "note": "NW Arkansas, Fort Smith, Little Rock metro done; batch 16 tightened red rule; rest of state next"
  },
