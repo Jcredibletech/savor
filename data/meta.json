@@ -6,15 +6,15 @@
   "done": 2020,
   "total": 3391,
   "remaining": 1371,
-  "updated": "2026-10-23T12:48-05:00",
+  "updated": "2026-10-23T13:18-05:00",
   "by_rating": {
-   "unknown": 898,
-   "yellow": 599,
    "red": 262,
+   "yellow": 599,
+   "unknown": 898,
    "green": 197,
    "closed": 64
   },
-  "note": "NW Arkansas and Fort Smith done; Little Rock metro through batch 15"
+  "note": "NW Arkansas, Fort Smith, Little Rock metro done; batch 16 tightened red rule; rest of state next"
  },
  "runs": [
   {
@@ -112,6 +112,12 @@
    "run": "All cuisines, Little Rock metro, batch 15 (Restaurantji + NWArkansas.com/Foodeist + web check)",
    "date": "2026-10-23",
    "rated": 130
+  },
+  {
+   "file": "all_fix_batch16_2026-10-23.json",
+   "run": "Quality fix, batch 16: stricter red rule (both sites 3.4 or below with 30+ reviews each); 150 thin reds downgraded to yellow",
+   "date": "2026-10-23",
+   "rated": 183
   }
  ],
  "osm_gaps": [
@@ -138,7 +144,7 @@
  ],
  "osm_timestamp": "2026-10-23T15:54:06Z",
  "dataset_built": "2026-10-23",
- "built": "2026-10-23T12:48-05:00",
+ "built": "2026-10-23T13:18-05:00",
  "stats": {
   "total": 3391,
   "by_cuisine": [
