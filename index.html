@@ -39,6 +39,8 @@
     <label class="field"><span>Rating</span><select id="fRating">
       <option value="all">Any</option><option value="rated">Rated only</option><option value="green">Green</option><option value="yellow">Yellow</option>
       <option value="red">Red</option><option value="unknown">Unknown</option><option value="closed">Closed</option><option value="none">Not yet rated</option></select></label>
+    <label class="field"><span>Confidence</span><select id="fConf">
+      <option value="all">Any</option><option value="high">High (2+ sources)</option><option value="low">Low (1 source)</option></select></label>
     <div class="btns">
       <button id="btnSubmit" class="btn primary">Submit</button>
       <button id="btnReset" class="btn ghost">Reset</button>
@@ -53,7 +55,7 @@
     <div id="map" aria-label="Map of restaurants"></div>
     <div class="legend glass">
       <span><i class="dot green"></i>Green</span><span><i class="dot yellow"></i>Yellow</span><span><i class="dot red"></i>Red</span>
-      <span><i class="dot unknown"></i>Unknown</span><span><i class="dot closed"></i>Closed</span><span><i class="dot none"></i>Not yet rated</span>
+      <span><i class="dot lowring"></i>Hollow = low confidence (1 source)</span><span><i class="dot unknown"></i>Unknown</span><span><i class="dot closed"></i>Closed</span><span><i class="dot none"></i>Not yet rated</span>
     </div>
   </section>
 
@@ -76,10 +78,11 @@
     <article class="panel">
       <h3>How ratings work</h3>
       <ul class="rubric">
-        <li><span class="pill green">Green</span>Two or more independent sources agree: about 4.3+ on a meaningful sample, or positive press plus 4.2+, and no recurring serious complaint.</li>
+        <li><span class="pill green">Green</span>High confidence unless tagged otherwise. Two or more independent sources agree: about 4.3+ on a meaningful sample, or positive press plus 4.2+, and no recurring serious complaint.</li>
         <li><span class="pill yellow">Yellow</span>Mixed or middling (about 3.5–4.2), big disagreement between platforms, recurring service or consistency complaints, or thin/dated evidence.</li>
         <li><span class="pill red">Red</span>Mostly negative recent evidence (about 3.4 or below), repeated sickness reports, or a cited failed inspection.</li>
-        <li><span class="pill unknown">Unknown</span>Fewer than two relevant sources. Never guessed.</li>
+        <li><span class="pill green low">Green</span><span class="lowtag">Low confidence, 1 source</span> Only one free source covers this location. Same thresholds, but green or red needs 20+ reviews on that source; otherwise yellow. Shown with an outlined pill and a hollow map dot. Use the Confidence filter to hide these.</li>
+        <li><span class="pill unknown">Unknown</span>No usable source for this location (no listing, no ratings yet, or the listing may be a different business). Never guessed.</li>
         <li><span class="pill closed">Closed</span>A citable source says it closed. Not rated, kept on the map.</li>
         <li><span class="pill none">Not yet rated</span>In the OSM dataset, but no research run has covered it yet.</li>
       </ul>

@@ -6,15 +6,34 @@
   "done": 3391,
   "total": 3391,
   "remaining": 0,
-  "updated": "2026-10-23T13:31-05:00",
+  "updated": "2026-10-23T16:05-05:00",
   "by_rating": {
    "closed": 109,
-   "yellow": 1117,
-   "green": 256,
-   "unknown": 1735,
-   "red": 174
+   "yellow": 1545,
+   "green": 536,
+   "unknown": 745,
+   "red": 456
   },
-  "note": "All regions processed; rest of Arkansas through batch 26"
+  "by_confidence": {
+   "high": 1547,
+   "low": 990
+  },
+  "by_rating_confidence": {
+   "green": {
+    "high": 256,
+    "low": 280
+   },
+   "yellow": {
+    "high": 1117,
+    "low": 428
+   },
+   "red": {
+    "low": 282,
+    "high": 174
+   }
+  },
+  "labeled_green_yellow_red": 2537,
+  "note": "All 3,391 processed. Batch 27 adds confidence: single-source places now rated (low confidence); zero-source places stay unknown."
  },
  "runs": [
   {
@@ -178,6 +197,12 @@
    "run": "All cuisines, Rest of Arkansas, batch 24 (Restaurantji + NWArkansas.com/Foodeist + web check)",
    "date": "2026-10-23",
    "rated": 150
+  },
+  {
+   "file": "all_conf_batch27_2026-10-23.json",
+   "run": "All cuisines, statewide, batch 27: confidence field added; single-source places now rated (low confidence)",
+   "date": "2026-10-23",
+   "rated": 3391
   }
  ],
  "osm_gaps": [
@@ -204,7 +229,7 @@
  ],
  "osm_timestamp": "2026-10-23T15:54:06Z",
  "dataset_built": "2026-10-23",
- "built": "2026-10-23T13:31-05:00",
+ "built": "2026-10-23T16:06-05:00",
  "stats": {
   "total": 3391,
   "by_cuisine": [

@@ -49,7 +49,7 @@ for f in sorted(files, key=key):
         if not oid or rating not in VALID:
             continue
         ratings[oid] = {"rating": rating, "reason": it.get("reason", ""), "sources": it.get("sources", []),
-                        "town": it.get("town", ""), "run": run.get("run", os.path.basename(f)),
+                        "town": it.get("town", ""), "confidence": it.get("confidence") or ("none" if rating == "unknown" else ("high" if len(it.get("sources") or []) >= 2 else "low")), "run": run.get("run", os.path.basename(f)),
                         "date": run.get("date", ""), "in_dataset": oid in ids}
         n += 1
     for g in run.get("osm_gaps_found", []) or []:

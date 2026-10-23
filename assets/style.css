@@ -106,3 +106,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 40p
 
 .results,.map-section{scroll-margin-top:110px}
 #map{background:#f4efe6}
+
+/* low-confidence (single source) */
+.pill.low{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor;opacity:.92}
+.pill.low::before{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.lowtag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;border:1px dashed #8d8aa0;color:#5b5870;background:#faf9fc;white-space:nowrap}
+.rubric .lowtag{margin:0 6px 0 0}
+.card.lowconf{border-top-style:dashed}
+.dot.lowring{background:#fff;border:3px solid var(--g)}

@@ -4,7 +4,8 @@ const GROUPS=["Burgers","Mexican","Coffee/Cafe","Sandwich/Deli","Pizza","Other/U
 const LABEL={green:"Green",yellow:"Yellow",red:"Red",unknown:"Unknown",closed:"Closed",none:"Not yet rated"};
 const COLOR={green:"#22a45d",yellow:"#f0b400",red:"#e03b36",unknown:"#8d8aa0",closed:"#3b3446",none:"#b9b2c6"};
 const ORDER={green:0,yellow:1,red:2,unknown:3,closed:4,none:5};
-const DEFAULTS={cuisine:"Mexican",zip:"72734",radius:"30",rating:"all"};
+const DEFAULTS={cuisine:"Mexican",zip:"72734",radius:"30",rating:"all",conf:"all"};
+const RATED=new Set(["green","yellow","red"]);
 const PAGE=60;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -21,7 +22,9 @@ let ring=null,center=null;
 
 function town(r){return r.city||(RAT[r.id]&&RAT[r.id].town)||"";}
 function ratingOf(r){return RAT[r.id]?RAT[r.id].rating:"none";}
-function pill(k){return `<span class="pill ${k}">${LABEL[k]}</span>`;}
+function confOf(r){const t=RAT[r.id];return t?(t.confidence||"none"):"none";}
+function isLow(r){return RATED.has(ratingOf(r))&&confOf(r)==="low";}
+function pill(k,low){return low?`<span class="pill ${k} low" title="Rated from a single free source">${LABEL[k]}</span><span class="lowtag" title="Only one free review source was found for this location">Low confidence, 1 source</span>`:`<span class="pill ${k}">${LABEL[k]}</span>`;}
 function where(r){const t=town(r);return `${t?esc(t):"Town unknown"}${r.zip?" · "+esc(r.zip):""}${r.dist!=null?` · ${r.dist.toFixed(1)} mi`:""}`;}
 function links(r,withSources){
   let h="";const rt=RAT[r.id];
@@ -32,7 +35,7 @@ function links(r,withSources){
 }
 function body(r){
   const k=ratingOf(r),rt=RAT[r.id];
-  return `<div class="row">${pill(k)}<span class="tag">${esc(r.cuisine)}</span></div>
+  return `<div class="row">${pill(k,isLow(r))}<span class="tag">${esc(r.cuisine)}</span></div>
   <div class="meta">${where(r)}</div>
   ${r.address?`<div class="meta">${esc(r.address)}</div>`:""}
   ${rt?`<p class="reason">${esc(rt.reason)}</p><div class="meta small">Rated ${esc(rt.date)} · run: ${esc(rt.run)}</div>`:`<p class="reason muted">No research run has covered this place yet.</p>`}
@@ -40,9 +43,9 @@ function body(r){
 }
 function popupHtml(r){return `<div class="pop"><h4>${esc(r.name)}</h4>${body(r)}</div>`;}
 
-function readForm(){return {cuisine:$("fCuisine").value,zip:$("fZip").value.trim(),radius:$("fRadius").value,rating:$("fRating").value};}
-function setForm(s){$("fCuisine").value=s.cuisine;$("fZip").value=s.zip;$("fRadius").value=s.radius;$("fRating").value=s.rating;}
-function same(a,b){return a.cuisine===b.cuisine&&a.zip===b.zip&&a.radius===b.radius&&a.rating===b.rating;}
+function readForm(){return {cuisine:$("fCuisine").value,zip:$("fZip").value.trim(),radius:$("fRadius").value,rating:$("fRating").value,conf:$("fConf").value};}
+function setForm(s){$("fCuisine").value=s.cuisine;$("fZip").value=s.zip;$("fRadius").value=s.radius;$("fRating").value=s.rating;$("fConf").value=s.conf||"all";}
+function same(a,b){return a.cuisine===b.cuisine&&a.zip===b.zip&&a.radius===b.radius&&a.rating===b.rating&&a.conf===b.conf;}
 function checkPending(){const p=!same(readForm(),applied);$("pending").hidden=!p;$("btnSubmit").classList.toggle("attn",p);}
 
 function apply(s){
@@ -56,12 +59,14 @@ function apply(s){
   const rad=+s.radius;
   list=DATA.filter(r=>s.cuisine==="All"||r.cuisine===s.cuisine).map(r=>{const o=Object.assign({},r);o.dist=c?hav(c[0],c[1],r.lat,r.lon):null;return o;})
     .filter(r=>!c||r.dist<=rad)
-    .filter(r=>{const k=ratingOf(r);return s.rating==="all"||(s.rating==="rated"?k!=="none":k===s.rating);});
+    .filter(r=>{const k=ratingOf(r);return s.rating==="all"||(s.rating==="rated"?k!=="none":k===s.rating);})
+    .filter(r=>{if(!s.conf||s.conf==="all")return true;const k=ratingOf(r);if(!RATED.has(k))return false;return confOf(r)===s.conf;});
   // map
   cluster.clearLayers();markers={};
   if(ring){map.removeLayer(ring);ring=null;} if(center){map.removeLayer(center);center=null;}
   const ms=list.map(r=>{const k=ratingOf(r);
-    const m=L.circleMarker([r.lat,r.lon],{radius:k==="none"?6:8,color:k==="closed"?COLOR.closed:"#fff",weight:k==="closed"?3:2,fillColor:k==="closed"?"#fff":COLOR[k],fillOpacity:1});
+    const low=isLow(r);
+    const m=L.circleMarker([r.lat,r.lon],low?{radius:7,color:COLOR[k],weight:3,fillColor:"#fff",fillOpacity:.85}:{radius:k==="none"?6:8,color:k==="closed"?COLOR.closed:"#fff",weight:k==="closed"?3:2,fillColor:k==="closed"?"#fff":COLOR[k],fillOpacity:1});
     m.bindPopup(()=>popupHtml(r),{maxWidth:320});markers[r.id]=m;return m;});
   cluster.addLayers(ms);
   if(c){ring=L.circle(c,{radius:rad*1609.34,color:"#e4572e",weight:2,dashArray:"6 6",fill:true,fillOpacity:.04}).addTo(map);
@@ -74,7 +79,7 @@ function apply(s){
   const scope=c?`within ${rad} mi of ${s.zip}`:"statewide";
   const rated=list.filter(r=>ratingOf(r)!=="none").length;
   $("resTitle").textContent=`${list.length.toLocaleString()} ${cu} ${scope}`;
-  $("resSub").textContent=`${rated.toLocaleString()} rated · ${(list.length-rated).toLocaleString()} not yet rated${s.rating!=="all"?` · rating filter: ${$("fRating").selectedOptions[0].text}`:""}`;
+  $("resSub").textContent=`${rated.toLocaleString()} rated · ${(list.length-rated).toLocaleString()} not yet rated${s.rating!=="all"?` · rating filter: ${$("fRating").selectedOptions[0].text}`:""}${s.conf&&s.conf!=="all"?` · confidence: ${$("fConf").selectedOptions[0].text}`:""}`;
   const b=$("banner");
   if(list.length===0){b.innerHTML=`No ${esc(cu)} found ${esc(scope)} in the OSM dataset${s.rating!=="all"?" with this rating filter":""}. Try a larger radius.`;b.hidden=false;}
   else if(rated===0){b.innerHTML=`<b>No rating run yet for ${esc(s.cuisine==="All"?"these restaurants":s.cuisine)} ${c?"near "+esc(s.zip):"statewide"}</b>. Ask Savor to run one. Every place below comes from OpenStreetMap and is marked <i>Not yet rated</i>.`;b.hidden=false;}
@@ -85,14 +90,14 @@ function apply(s){
 }
 function sorted(){const k=$("sort").value;const a=list.slice();
   if(k==="name")a.sort((x,y)=>x.name.localeCompare(y.name));
-  else if(k==="rating")a.sort((x,y)=>(ORDER[ratingOf(x)]-ORDER[ratingOf(y)])||((x.dist||0)-(y.dist||0))||x.name.localeCompare(y.name));
+  else if(k==="rating")a.sort((x,y)=>(ORDER[ratingOf(x)]-ORDER[ratingOf(y)])||((isLow(x)?1:0)-(isLow(y)?1:0))||((x.dist||0)-(y.dist||0))||x.name.localeCompare(y.name));
   else a.sort((x,y)=>x.dist!=null?(x.dist-y.dist):x.name.localeCompare(y.name));
   return a;}
 let cur=[];
 function render(reset){
   if(reset){cur=sorted();shown=0;$("cards").innerHTML="";}
   const frag=document.createDocumentFragment();
-  cur.slice(shown,shown+PAGE).forEach(r=>{const k=ratingOf(r);const d=document.createElement("article");d.className="card "+k;
+  cur.slice(shown,shown+PAGE).forEach(r=>{const k=ratingOf(r);const d=document.createElement("article");d.className="card "+k+(isLow(r)?" lowconf":"");
     d.innerHTML=`<h4>${esc(r.name)}</h4>${body(r)}`;
     d.addEventListener("click",e=>{if(e.target.closest("a"))return;const m=markers[r.id];if(!m)return;
       document.getElementById("map").scrollIntoView({behavior:"smooth",block:"center"});cluster.zoomToShowLayer(m,()=>m.openPopup());});
@@ -126,7 +131,7 @@ Promise.all(["data/restaurants.json","data/ratings.json","data/zips.json","data/
 $("btnSubmit").addEventListener("click",()=>apply(readForm()));
 $("btnReset").addEventListener("click",()=>{setForm(DEFAULTS);apply(DEFAULTS);});
 $("fZip").addEventListener("keydown",e=>{if(e.key==="Enter")apply(readForm());});
-["fCuisine","fZip","fRadius","fRating"].forEach(id=>{$(id).addEventListener("input",checkPending);$(id).addEventListener("change",checkPending);});
+["fCuisine","fZip","fRadius","fRating","fConf"].forEach(id=>{$(id).addEventListener("input",checkPending);$(id).addEventListener("change",checkPending);});
 $("sort").addEventListener("change",()=>render(true));
 $("btnMore").addEventListener("click",()=>render(false));
 })();
