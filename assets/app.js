@@ -110,9 +110,11 @@ function initStatic(){
   const total=META.total;const p=META.progress||{};
   const rated=(typeof p.rated==="number"?p.rated:(typeof p.done==="number"?p.done:META.rated));
   const tot=(typeof p.total==="number"?p.total:total);
-  $("statTotal").textContent=total.toLocaleString();$("statRated").textContent=rated.toLocaleString();
+  const br=p.by_rating||{};const lab=(typeof p.labeled_green_yellow_red==="number")?p.labeled_green_yellow_red:((br.green||0)+(br.yellow||0)+(br.red||0));
+  const unk=br.unknown||0,clo=br.closed||0,left=(typeof p.remaining==="number")?p.remaining:Math.max(0,tot-rated);
+  $("statTotal").textContent=total.toLocaleString();$("statRated").textContent=lab.toLocaleString();
   $("progBar").style.width=Math.min(100,rated/tot*100).toFixed(1)+"%";
-  $("progLabel").textContent=`${rated.toLocaleString()} of ${tot.toLocaleString()} rated so far${p.updated?` · progress updated ${p.updated}`:""}`;
+  $("progLabel").textContent=`${lab.toLocaleString()} rated · ${unk.toLocaleString()} unknown · ${clo.toLocaleString()} closed of ${tot.toLocaleString()}${left?` · ${left.toLocaleString()} not yet researched`:""}${p.updated?` · progress updated ${p.updated}`:""}`;
   $("osmTs").textContent=META.osm_timestamp?new Date(META.osm_timestamp).toLocaleString("en-US",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"})+" CT":"unknown";
   $("buildInfo").textContent=`Data built ${META.built} from ${META.runs.length} rating run file(s).`;
   const by={};DATA.forEach(r=>{by[r.cuisine]=(by[r.cuisine]||0)+1;});const mx=Math.max(...Object.values(by));
