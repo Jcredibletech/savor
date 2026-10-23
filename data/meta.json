@@ -1,20 +1,20 @@
 {
  "total": 3391,
- "rated": 2320,
+ "rated": 2470,
  "progress": {
-  "rated": 2320,
-  "done": 2320,
+  "rated": 2470,
+  "done": 2470,
   "total": 3391,
-  "remaining": 1071,
+  "remaining": 921,
   "updated": "2026-10-23T13:31-05:00",
   "by_rating": {
-   "closed": 73,
-   "yellow": 848,
-   "green": 210,
-   "unknown": 1062,
-   "red": 127
+   "closed": 78,
+   "yellow": 894,
+   "green": 215,
+   "unknown": 1151,
+   "red": 132
   },
-  "note": "All regions processed; rest of Arkansas through batch 18"
+  "note": "All regions processed; rest of Arkansas through batch 19"
  },
  "runs": [
   {
@@ -128,6 +128,12 @@
   {
    "file": "all_rest_batch18_2026-10-23.json",
    "run": "All cuisines, Rest of Arkansas, batch 18 (Restaurantji + NWArkansas.com/Foodeist + web check)",
+   "date": "2026-10-23",
+   "rated": 150
+  },
+  {
+   "file": "all_rest_batch19_2026-10-23.json",
+   "run": "All cuisines, Rest of Arkansas, batch 19 (Restaurantji + NWArkansas.com/Foodeist + web check)",
    "date": "2026-10-23",
    "rated": 150
   }
